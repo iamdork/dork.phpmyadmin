@@ -1,0 +1,38 @@
+- set_fact:
+    phpmyadmin_folder: phpMyAdmin-{{ phpmyadmin_version }}-{{ phpmyadmin_language }}
+
+- name: download phpmyadmin
+  get_url:
+    url: https://files.phpmyadmin.net/phpMyAdmin/4.5.4.1/{{ phpmyadmin_folder }}.tar.gz
+    dest: /tmp
+
+- name: unarchive phpmyadmin
+  unarchive:
+    copy: no
+    src: /tmp/{{ phpmyadmin_folder }}.tar.gz
+    dest: /opt
+
+- name: link phpmyadmin
+  file:
+    src: /opt/{{ phpmyadmin_folder }}
+    dest: /opt/phpmyadmin
+    state: link
+
+- name: copy phpmyadmin configuration
+  copy:
+    src: config.inc.php
+    dest: /opt/phpmyadmin/config.inc.php
+
+- name: enable nginx vhost
+  template:
+    src: phpmyadmin.conf.j2
+    dest: /etc/nginx/conf.d/phpmyadmin.conf
+  when: phpmyadmin_port
+  notify: dork.nginx reload
+
+- name: remove nginx vhost
+  file:
+    path: /etc/nginx/conf.d/phpmyadmin.conf
+    state: absent
+  when: not phpmyadmin_port
+  notify: dork.nginx reload
