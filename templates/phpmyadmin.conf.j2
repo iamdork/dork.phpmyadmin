@@ -1,6 +1,6 @@
 server {
   server_name _;
-  listen {{ phpmyadmin_port }};
+  listen {{ dork_ports['phpmyadmin'] }};
   root /opt/phpmyadmin;
   error_log /var/log/nginx/error.log;
 

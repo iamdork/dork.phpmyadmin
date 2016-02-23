@@ -27,12 +27,4 @@
   template:
     src: phpmyadmin.conf.j2
     dest: /etc/nginx/conf.d/phpmyadmin.conf
-  when: phpmyadmin_port
-  notify: dork.nginx reload
-
-- name: remove nginx vhost
-  file:
-    path: /etc/nginx/conf.d/phpmyadmin.conf
-    state: absent
-  when: not phpmyadmin_port
   notify: dork.nginx reload
