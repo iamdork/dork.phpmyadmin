@@ -3,7 +3,7 @@
 
 - name: download phpmyadmin
   get_url:
-    url: https://files.phpmyadmin.net/phpMyAdmin/4.5.4.1/{{ phpmyadmin_folder }}.tar.gz
+    url: https://files.phpmyadmin.net/phpMyAdmin/{{ phpmyadmin_version }}/{{ phpmyadmin_folder }}.tar.gz
     dest: /tmp
 
 - name: unarchive phpmyadmin
